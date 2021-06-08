@@ -1,0 +1,105 @@
+swagger: '2.0'
+info:
+  title: API_ID 
+  description: Luncn n Learn API Gateway with a Cloud Run backend
+  version: 1.0.0  
+schemes:
+- https
+consumes:
+- application/json
+produces:
+- application/json
+security:
+  - firebase: []
+x-google-backend:
+  address: ADDRESS_OF_GCP_BACKEND 
+paths:
+  /names:
+    get:
+      summary: get the names of all the teams
+      operationId: getTeamNames
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            $ref: "#/definitions/teamNameResponse"
+    options:
+      operationId: getTeamNamesCors
+      responses:
+        '200':
+          description: Success
+          
+  /team/{name}:
+    get:
+      parameters:
+        - in: path
+          name: name
+          type: string
+          required: true
+          description: Name of team
+      summary: get the team information by name
+      operationId: getTeamByName
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            $ref: "#/definitions/teamResponse"
+    options:
+      parameters:
+        - in: path
+          name: name
+          type: string
+          required: true
+          description: Name of team
+      operationId: getTeamByNameCors
+      responses:
+        '200':
+          description: Success
+
+definitions:
+  teamNameResponse:
+    properties:
+      name:
+        type: string
+  
+  teamResponse:
+    properties:
+      off_reb_percent:
+        type: number
+      def_reb_percent_allow:
+        type: number
+      ft_over_fga_allow:
+        type: number
+      efg_percent:
+        type: number
+      ft_rate:
+        type: number
+      to_percent_allow:
+        type: number
+      teamName:
+        type: string
+      off_rtg:
+        type: number
+      pace:
+        type: number
+      three_fg_trend:
+        type: number
+      ft_over_fga:
+        type: number
+      to_percent:
+        type: number
+      efg_percent_allow:
+        type: number
+      def_rtg:
+        type: number
+      ts_percent:
+        type: number
+
+securityDefinitions:
+  firebase:
+    authorizationUrl: ""
+    flow: "implicit"
+    type: "oauth2"
+    x-google-issuer: "https://securetoken.google.com/PROJECT_ID"
+    x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
+    x-google-audiences: "PROJECT_ID"
